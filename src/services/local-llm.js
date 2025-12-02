@@ -9,11 +9,20 @@ export class LocalLLMService {
     async initialize(modelPath = '/gemma2-2b-it-gpu-int8.bin') {
         if (this.llm) return;
 
+        const startTime = Date.now();
+        console.log('🚀 [LocalLLM] Starting initialization...');
+
         try {
+            console.log('📦 [LocalLLM] Loading WASM...');
             const genaiFileset = await FilesetResolver.forGenAiTasks(
                 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-genai/wasm'
             );
+            console.log(`✅ [LocalLLM] WASM loaded in ${Date.now() - startTime}ms`);
 
+            console.log('🧠 [LocalLLM] Loading model from:', modelPath);
+            console.log('📊 [LocalLLM] Model size: ~2.4GB, this may take a while...');
+
+            const modelStartTime = Date.now();
             this.llm = await LlmInference.createFromOptions(genaiFileset, {
                 baseOptions: {
                     modelAssetPath: modelPath,
@@ -24,31 +33,59 @@ export class LocalLLMService {
                 randomSeed: 101
             });
 
+            const totalTime = Date.now() - startTime;
+            const modelTime = Date.now() - modelStartTime;
+            console.log(`✅ [LocalLLM] Model loaded in ${modelTime}ms`);
+            console.log(`✅ [LocalLLM] Total initialization: ${totalTime}ms`);
+
             this.isReady = true;
-            console.log("Local LLM Initialized");
         } catch (error) {
-            console.error("Failed to initialize Local LLM:", error);
+            console.error('❌ [LocalLLM] Initialization failed:', error);
+            console.error('❌ [LocalLLM] Error details:', {
+                message: error.message,
+                stack: error.stack,
+                modelPath
+            });
             throw error;
         }
     }
 
-    async generateQuestion(transcript) {
+    async analyzeConversation(transcript) {
         if (!this.llm) {
             throw new Error("Local LLM not initialized");
         }
 
-        const prompt = `You are a precise query generator. Your ONLY task is to convert the user's spoken input into a short, effective search query.
-    
-Rules:
-1. Output ONLY the search query.
-2. Do NOT include explanations, reasoning, or extra text.
-3. Do NOT use markdown formatting.
+        const prompt = `You are an intelligent conversation analyst. Your job is to listen to conversations and detect when factual information is needed.
 
-User Input: "${transcript}"
+Analyze this conversation snippet:
+"${transcript}"
 
-Search Query:`;
+Instructions:
+1. If the conversation contains a factual question, dispute, or need for statistics/data, output ONLY a concise search query.
+2. If it's just casual chat, greetings, or opinions, output exactly: NULL
 
-        return this.llm.generateResponse(prompt);
+Examples:
+- "I wonder how many jobs AI replaced in 2024" -> "AI job displacement statistics 2024"
+- "Hey, how are you?" -> NULL
+- "What percentage of companies use AI?" -> "percentage of companies using AI"
+- "I love pizza" -> NULL
+
+Output:`;
+
+        const response = await this.llm.generateResponse(prompt);
+        const cleanResponse = response.trim();
+
+        // Return null if the model says there's no factual need
+        if (cleanResponse === 'NULL' || cleanResponse.toLowerCase().includes('null')) {
+            return null;
+        }
+
+        return cleanResponse;
+    }
+
+    // Keep old method for backwards compatibility
+    async generateQuestion(transcript) {
+        return this.analyzeConversation(transcript);
     }
 }
 

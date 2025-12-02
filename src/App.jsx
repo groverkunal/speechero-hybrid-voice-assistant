@@ -1,9 +1,9 @@
 import React from 'react';
-import VoiceAssistant from './components/VoiceAssistant';
+import AmbientMode from './components/AmbientMode';
 
 function App() {
   return (
-    <VoiceAssistant />
+    <AmbientMode />
   );
 }
 

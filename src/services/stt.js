@@ -10,6 +10,7 @@ export class SpeechService {
         this.recognition.continuous = true;
         this.recognition.interimResults = true;
         this.recognition.lang = 'en-US';
+        this.isExplicitStop = false;
 
         this.recognition.onresult = (event) => {
             let finalTranscript = '';
@@ -28,24 +29,35 @@ export class SpeechService {
 
         this.recognition.onerror = (event) => {
             console.error("Speech recognition error", event.error);
+            // Auto-restart on error if not explicitly stopped
+            if (!this.isExplicitStop && event.error !== 'not-allowed') {
+                setTimeout(() => this.start(), 1000);
+            }
         };
 
         this.recognition.onend = () => {
             if (onEnd) onEnd();
+            // Auto-restart if not explicitly stopped
+            if (!this.isExplicitStop) {
+                console.log("Speech recognition ended, restarting...");
+                this.start();
+            }
         };
     }
 
     start() {
+        this.isExplicitStop = false;
         if (this.recognition) {
             try {
                 this.recognition.start();
             } catch (e) {
-                console.error("Error starting recognition:", e);
+                // Ignore error if already started
             }
         }
     }
 
     stop() {
+        this.isExplicitStop = true;
         if (this.recognition) {
             this.recognition.stop();
         }

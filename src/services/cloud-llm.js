@@ -16,7 +16,10 @@ export class CloudLLMService {
         }
 
         try {
-            const result = await this.model.generateContent(question);
+            // Wrap the question with instruction for brevity
+            const prompt = `${question}\n\nProvide a BRIEF, factual answer (2-3 sentences max, news-ticker style). Focus on key stats and facts only.`;
+
+            const result = await this.model.generateContent(prompt);
             const response = await result.response;
             return response.text();
         } catch (error) {
