@@ -9,7 +9,7 @@ const AmbientMode = () => {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState([]);
     const [facts, setFacts] = useState([]);
-    const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyBmHXt97psw0E7uzJ5_YXTwfTp8exjXGmQ");
+    const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || localStorage.getItem('gemini_api_key') || '');
     const [processing, setProcessing] = useState(false);
     const [debugStatus, setDebugStatus] = useState('Idle');
 
