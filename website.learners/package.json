@@ -1,5 +1,5 @@
 {
-  "name": "speechero",
+  "name": "website.learners",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,16 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "@mediapipe/tasks-genai": "^0.10.25",
-    "@react-oauth/google": "^0.12.2",
-    "body-parser": "^2.2.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "framer-motion": "^12.23.25",
-    "jwt-decode": "^4.0.0",
-    "lucide-react": "^0.555.0",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -28,13 +22,10 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.22",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17",
     "vite": "^7.2.4"
   }
 }

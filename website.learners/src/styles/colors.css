@@ -1,0 +1,40 @@
+:root {
+    /* Primary Red (replaces Blue #1a73e8 and Button Blue) */
+    --primary: #d93025;
+    --primary-hover: #b31412;
+
+    /* Secondary Red (replaces Teal offset shadow) */
+    /* Using a softer red/salmon for the offset shadow to mimic the teal weight */
+    --accent-shadow: #ea4335;
+
+    /* High Contrast Gradient for "Blue to Teal" equivalent depth */
+    /* Transition from Bright Vibrant Red to Dark Rich Crimson */
+    --accent-shadow-gradient: linear-gradient(135deg, #FF5252 0%, #B71C1C 100%);
+    --icon-gradient: linear-gradient(135deg, #FF8A80 0%, #D32F2F 100%);
+
+    /* Neutrals (Strict Google Clone) */
+    --background: #ffffff;
+    --surface: #ffffff;
+    --text: #202124;
+    --text-light: #5f6368;
+    --border: #dadce0;
+
+    /* Icon Box Background */
+    --icon-bg: #f8f9fa;
+
+    --shadow: 0 1px 2px 0 rgba(60, 64, 67, .3), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    --header-height: 64px;
+}
+
+[data-theme='dark'] {
+    --primary: #ea4335;
+    --primary-hover: #f28b82;
+    --accent-shadow: #c5221f;
+    --accent-shadow-gradient: linear-gradient(135deg, #D32F2F 0%, #B71C1C 100%);
+
+    --background: #202124;
+    --surface: #303134;
+    --text: #e8eaed;
+    --text-light: #9aa0a6;
+    --border: #3c4043;
+}

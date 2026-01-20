@@ -1,0 +1,235 @@
+/* CSS for App components */
+
+.header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #5f6368;
+  /* Grey logo text to match clean aesthetic */
+}
+
+.nav ul {
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  font-weight: 500;
+  color: var(--text-light);
+  transition: color 0.2s;
+}
+
+.nav a:hover {
+  color: var(--primary);
+}
+
+.hero {
+  padding: 100px 0;
+  text-align: center;
+  background: white;
+  /* Clean white background */
+}
+
+.hero-title {
+  font-size: 64px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: var(--text);
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 20px;
+  color: var(--text-light);
+  max-width: 800px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.section {
+  padding: 60px 0 100px;
+  background: white;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 60px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Card Styles */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 48px;
+  /* Generous gap */
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  position: relative;
+  transition: transform 0.2s ease;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Offset Shadow Effect - GRADIENT CLONE */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 24px;
+  /* Use the new gradient variable */
+  background: var(--accent-shadow-gradient, var(--accent-shadow));
+  z-index: -1;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translate(-3px, -3px);
+}
+
+.card-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  /* Force white background */
+  border-radius: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.icon-box {
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  background: var(--icon-bg);
+}
+
+.icon-box svg {
+  width: 32px;
+  height: 32px;
+  color: var(--primary);
+  /* Red Icon */
+}
+
+/* Small sparkle top right of icon box */
+.icon-sparkle {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: var(--primary);
+  /* Red Sparkle */
+  width: 24px;
+  height: 24px;
+}
+
+.card-title-group {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.card-tag {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0;
+}
+
+.card-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin-bottom: 32px;
+  flex-grow: 1;
+}
+
+.card-footer {
+  margin-top: auto;
+}
+
+.btn-pill {
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  /* Subtle gradient for button depth */
+  background: linear-gradient(180deg, var(--primary) 0%, #c5221f 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(217, 48, 37, 0.3);
+  /* Brighten gradient on hover */
+  background: linear-gradient(180deg, #ea4335 0%, #d93025 100%);
+}
+
+.link {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-light);
+}
