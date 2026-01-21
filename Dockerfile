@@ -1,35 +1,40 @@
 # Stage 1: Build the React application
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install all dependencies (including dev for build)
 RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Build the app
-# We need to pass the API key at build time for Vite
-ARG VITE_GEMINI_API_KEY
-ENV VITE_GEMINI_API_KEY=$VITE_GEMINI_API_KEY
-
+# Build the React app
 RUN npm run build
 
-# Stage 2: Serve with Nginx
-FROM nginx:alpine
+# Stage 2: Production server
+FROM node:20-alpine
 
-# Copy built assets from Stage 1
-COPY --from=build /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Copy custom Nginx config for SPA routing
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy package files
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Copy built React app
+COPY --from=build /app/dist ./dist
+
+# Copy server files
+COPY server ./server
 
 # Expose port 8080 (Cloud Run default)
+ENV PORT=8080
 EXPOSE 8080
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the Express server
+CMD ["node", "server/server.js"]
