@@ -9,7 +9,6 @@ const AmbientMode = () => {
     const [isListening, setIsListening] = useState(false);
     const [transcript, setTranscript] = useState([]);
     const [facts, setFacts] = useState([]);
-    const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyBmHXt97psw0E7uzJ5_YXTwfTp8exjXGmQ");
     const [processing, setProcessing] = useState(false);
     const [debugStatus, setDebugStatus] = useState('Idle');
 
@@ -51,12 +50,9 @@ const AmbientMode = () => {
     }, []);
 
     useEffect(() => {
-        if (apiKey) {
-            orchestrator.current = new AgentOrchestrator(apiKey);
-            localStorage.setItem('gemini_api_key', apiKey);
-            setDebugStatus('☁️ Multi-agent ready!');
-        }
-    }, [apiKey]);
+        orchestrator.current = new AgentOrchestrator();
+        setDebugStatus('☁️ Agent ready!');
+    }, []);
 
     // Persist transcript to localStorage
     useEffect(() => {
@@ -94,12 +90,7 @@ const AmbientMode = () => {
         }
     }, []);
 
-    useEffect(() => {
-        if (apiKey) {
-            // cloudLLM.current = new CloudLLMService(apiKey); // This line is no longer needed
-            localStorage.setItem('gemini_api_key', apiKey);
-        }
-    }, [apiKey]);
+
 
     const analyzeBuffer = async () => {
         const buffer = transcriptBuffer.current.trim();
@@ -109,7 +100,7 @@ const AmbientMode = () => {
         }
 
         if (!orchestrator.current) {
-            setDebugStatus('❌ No API key - please add one above');
+            setDebugStatus('❌ Orchestrator not initialized');
             return;
         }
 
@@ -183,7 +174,6 @@ const AmbientMode = () => {
             <div className="flex justify-center items-center gap-4 mb-6">
                 <button
                     onClick={toggleListening}
-                    disabled={!apiKey}
                     className={`px-6 py-2 rounded-full flex items-center gap-2 transition-all ${isListening
                         ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
                         : 'bg-gradient-to-br from-blue-500 to-purple-600 text-white hover:scale-105'
@@ -205,17 +195,7 @@ const AmbientMode = () => {
                 </div>
             </div>
 
-            {/* API Key Input */}
-            {!apiKey && (
-                <div className="max-w-md mx-auto mb-6 glass-panel p-4 rounded-xl flex gap-2">
-                    <input
-                        type="password"
-                        placeholder="Enter Gemini API Key"
-                        className="bg-transparent border-none outline-none flex-1 text-white placeholder-gray-500"
-                        onChange={(e) => setApiKey(e.target.value)}
-                    />
-                </div>
-            )}
+
 
             {/* Main Content: Split View */}
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto w-full">

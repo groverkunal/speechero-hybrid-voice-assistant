@@ -40,7 +40,7 @@ app.post('/api/process-transcript', async (req, res) => {
 });
 
 // Handle React routing, return all requests to React app
-app.get('*', (req, res) => {
+app.get('/{*splat}', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
